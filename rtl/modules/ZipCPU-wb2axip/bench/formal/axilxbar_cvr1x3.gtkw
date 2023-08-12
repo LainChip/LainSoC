@@ -1,0 +1,128 @@
+[*]
+[*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
+[*] Thu Dec 12 18:45:50 2019
+[*]
+[dumpfile_mtime] "Thu Dec 12 18:22:49 2019"
+[dumpfile_size] 187868
+[timestart] 0
+[size] 1920 1029
+[pos] 3839 0
+*-6.088337 260 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axilxbar.
+[sst_width] 196
+[signals_width] 230
+[sst_expanded] 1
+[sst_vpaned_height] 324
+@28
+axilxbar.S_AXI_ACLK
+axilxbar.S_AXI_ARESETN
+@800200
+-Master write
+@28
+axilxbar.S_AXI_WVALID
+@22
+axilxbar.S_AXI_AWADDR[15:0]
+@28
+axilxbar.S_AXI_AWPROT[2:0]
+axilxbar.S_AXI_AWREADY
+axilxbar.S_AXI_AWVALID
+axilxbar.S_AXI_BREADY
+axilxbar.S_AXI_BRESP[1:0]
+axilxbar.S_AXI_BVALID
+@22
+axilxbar.S_AXI_WDATA[31:0]
+@28
+axilxbar.S_AXI_WREADY
+@22
+axilxbar.S_AXI_WSTRB[3:0]
+@200
+-
+-
+@1000200
+-Master write
+@800200
+-Master read
+@29
+axilxbar.S_AXI_ARVALID
+@22
+axilxbar.S_AXI_ARADDR[15:0]
+@28
+axilxbar.S_AXI_ARPROT[2:0]
+axilxbar.S_AXI_ARREADY
+@200
+-
+@28
+axilxbar.S_AXI_RVALID
+axilxbar.S_AXI_RREADY
+@22
+axilxbar.S_AXI_RDATA[31:0]
+@28
+axilxbar.S_AXI_RRESP[1:0]
+@1000200
+-Master read
+@800200
+-Slave write
+@28
+axilxbar.M_AXI_AWVALID[2:0]
+axilxbar.M_AXI_AWREADY[2:0]
+@22
+axilxbar.M_AXI_AWADDR[47:0]
+axilxbar.M_AXI_AWPROT[8:0]
+@200
+-
+@22
+axilxbar.M_AXI_WDATA[95:0]
+@28
+axilxbar.M_AXI_WREADY[2:0]
+@22
+axilxbar.M_AXI_WSTRB[11:0]
+@28
+axilxbar.M_AXI_WVALID[2:0]
+@200
+-
+@28
+axilxbar.M_AXI_BVALID[2:0]
+axilxbar.M_AXI_BREADY[2:0]
+@22
+axilxbar.M_AXI_BRESP[5:0]
+@1000200
+-Slave write
+@800200
+-Slave read
+@28
+axilxbar.M_AXI_ARVALID[2:0]
+axilxbar.M_AXI_ARREADY[2:0]
+@22
+axilxbar.M_AXI_ARADDR[47:0]
+axilxbar.M_AXI_ARPROT[8:0]
+@200
+-
+@22
+axilxbar.M_AXI_RDATA[95:0]
+@28
+axilxbar.M_AXI_RREADY[2:0]
+@22
+axilxbar.M_AXI_RRESP[5:0]
+@28
+axilxbar.M_AXI_RVALID[2:0]
+@1000200
+-Slave read
+@200
+-
+@28
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.err_wr_return
+@22
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.r_returns[3:0]
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.w_returns[3:0]
+@28
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.was_revery
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.was_wevery
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.err_wr_return
+@22
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.r_returns[3:0]
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.w_returns[3:0]
+@28
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.was_revery
+axilxbar.COVER_CONNECTIVITY_FROM_MASTER<0>.was_wevery
+[pattern_trace] 1
+[pattern_trace] 0

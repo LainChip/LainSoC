@@ -1,0 +1,50 @@
+confreg CONFREG(
+    .aclk           (soc_clk            ),       
+    .aresetn        (soc_aresetn            ),     
+
+    .s_awid         (cfg_s.aw_id        ),
+    .s_awaddr       (cfg_s.aw_addr      ),
+    .s_awlen        (cfg_s.aw_len       ),
+    .s_awsize       (cfg_s.aw_size      ),
+    .s_awburst      (cfg_s.aw_burst     ),
+    .s_awlock       ('0                 ),
+    .s_awcache      ('0                 ),
+    .s_awprot       ('0                 ),
+    .s_awvalid      (cfg_s.aw_valid     ),
+    .s_awready      (cfg_s.aw_ready     ),
+
+    .s_wready       (cfg_s.w_ready      ),
+    .s_wdata        (cfg_s.w_data       ),
+    .s_wstrb        (cfg_s.w_strb       ),
+    .s_wlast        (cfg_s.w_last       ),
+    .s_wvalid       (cfg_s.w_valid      ),
+
+    .s_bid          (cfg_s.b_id         ),
+    .s_bresp        (cfg_s.b_resp       ),
+    .s_bvalid       (cfg_s.b_valid      ),
+    .s_bready       (cfg_s.b_ready      ),
+
+    .s_arid         (cfg_s.ar_id        ),
+    .s_araddr       (cfg_s.ar_addr      ),
+    .s_arlen        (cfg_s.ar_len       ),
+    .s_arsize       (cfg_s.ar_size      ),
+    .s_arburst      (cfg_s.ar_burst     ),
+    .s_arlock       ('0                 ),
+    .s_arcache      ('0                 ),
+    .s_arprot       ('0                 ),
+    .s_arvalid      (cfg_s.ar_valid     ),
+    .s_arready      (cfg_s.ar_ready     ),
+    
+    .s_rready       (cfg_s.r_ready      ),
+    .s_rid          (cfg_s.r_id         ),
+    .s_rdata        (cfg_s.r_data       ),
+    .s_rresp        (cfg_s.r_resp       ),
+    .s_rlast        (cfg_s.r_last       ),
+    .s_rvalid       (cfg_s.r_valid      ),
+
+    .dat_cfg_to_ctrl,
+    .dat_ctrl_to_cfg,
+    .gpio_o,
+    .gpio_i,
+    .gpio_t
+);

@@ -1,0 +1,57 @@
+[tasks]
+prf4x8_lp   nxm opt_lowpower
+prf4x8      nxm
+cvr4x8_lp   nxl opt_lowpower cvr
+cvr4x8      nxl              cvr
+prf1x8_lp   oxm opt_lowpower
+prf1x8      oxm
+cvr1x3_lp   oxl opt_lowpower cvr
+cvr1x3      oxl              cvr
+
+prf4x1_lp   nxo opt_lowpower
+prf4x1      nxo
+cvr4x1_lp   nxo opt_lowpower cvr
+cvr4x1      nxo              cvr
+
+[options]
+~cvr: mode prove
+~cvr: depth 4
+cvr:  mode cover
+cvr:  depth 64
+
+[engines]
+smtbmc boolector
+# smtbmc
+# smtbmc z3
+
+
+[script]
+read -formal addrdecode.v
+read -formal skidbuffer.v
+read -formal axilxbar.v
+read -formal faxil_slave.v
+read -formal faxil_master.v
+--pycode-begin--
+cmd = "hierarchy -top axilxbar"
+if ("nxm" in tags):
+	cmd += " -chparam  NM 4 -chparam NS 8"
+if ("oxm" in tags):
+	cmd += " -chparam  NM 1 -chparam NS 8"
+if ("oxl" in tags):
+	cmd += " -chparam  NM 1 -chparam NS 3"
+if ("nxl" in tags):
+	cmd += " -chparam  NM 3 -chparam NS 3"
+if ("nxo" in tags):
+	cmd += " -chparam  NM 4 -chparam NS 1"
+cmd += " -chparam C_AXI_ADDR_WIDTH 16"
+cmd += " -chparam OPT_LOWPOWER %d" % (1 if "opt_lowpower" in tags else 0)
+output(cmd)
+--pycode-end--
+prep -top axilxbar
+
+[files]
+../../rtl/skidbuffer.v
+../../rtl/addrdecode.v
+../../rtl/axilxbar.v
+faxil_slave.v
+faxil_master.v

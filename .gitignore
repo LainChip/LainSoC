@@ -1,0 +1,9 @@
+# vivado-project
+*.cache
+*.hw
+*.dcp
+complex_soc.gen
+complex_soc.runs
+complex_soc.ip_user_files/*
+complex_soc.sim
+ip_upgrade.log

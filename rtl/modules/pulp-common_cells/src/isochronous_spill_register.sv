@@ -11,7 +11,7 @@
 //
 // Florian Zaruba <zarubaf@iis.ee.ethz.ch>
 
-`include "common_cells/registers.svh"
+`include "registers.svh"
 
 /// A register with handshakes that completely cuts any combinatorial paths
 /// between the input and output in isochronous clock domains.

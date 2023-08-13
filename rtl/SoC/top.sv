@@ -437,13 +437,13 @@ soc_top #(
 
     .debug_output_mode(2'b00),
 
-    .i2cm_scl_i,
-	  .i2cm_scl_o,
-	  .i2cm_scl_t, 
+      .i2cm_scl_i(i2cm_scl_i),
+	  .i2cm_scl_o(i2cm_scl_o),
+	  .i2cm_scl_t(i2cm_scl_t),
 
-	  .i2cm_sda_i,
-	  .i2cm_sda_o,
-	  .i2cm_sda_t
+	  .i2cm_sda_i(i2cm_sda_i),
+	  .i2cm_sda_o(i2cm_sda_o),
+	  .i2cm_sda_t(i2cm_sda_t)
 );
 
 endmodule

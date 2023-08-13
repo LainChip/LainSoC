@@ -13,7 +13,7 @@
 // - Andreas Kurth <akurth@iis.ee.ethz.ch>
 
 `include "typedef.svh"
-`include "common_cells/registers.svh"
+`include "registers.svh"
 
 /// AXI4-Lite registers with optional read-only and protection features.
 ///

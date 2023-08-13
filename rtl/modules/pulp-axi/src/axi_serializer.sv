@@ -12,7 +12,7 @@
 // - Wolfgang Roenninger <wroennin@iis.ee.ethz.ch>
 // - Andreas Kurth <akurth@iis.ee.ethz.ch>
 
-`include "common_cells/registers.svh"
+`include "registers.svh"
 /// Serialize all AXI transactions to a single ID (zero).
 module axi_serializer #(
   /// Maximum number of in flight read transactions.

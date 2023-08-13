@@ -298,17 +298,18 @@ assign cpu_global_reset = ~cpu_aresetn; // useless
   .debug_wb_rf_wdata(debug_wb_rf_wdata)
  );
 
-debug_output debugger (
-  .clk(cpu_clk),
-  .rst(~cpu_aresetn),
+//debug_output debugger (
+//  .clk(cpu_clk),
+//  .rst(~cpu_aresetn),
 
-  .debug_wb_pc  (debug_wb_pc   ),
-  .debug_wb_instr(debug_wb_instr),
-  .debug_wb_rf_wdata(debug_wb_rf_wdata),
+//  .debug_wb_pc  (debug_wb_pc   ),
+//  .debug_wb_instr(debug_wb_instr),
+//  .debug_wb_rf_wdata(debug_wb_rf_wdata),
 
-  .mode(debug_output_mode_synced),
-  .data(debug_output_data)
-);
+//  .mode(debug_output_mode_synced),
+//  .data(debug_output_data)
+//);
+
 
 endmodule
 

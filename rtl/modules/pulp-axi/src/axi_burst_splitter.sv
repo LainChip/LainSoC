@@ -14,7 +14,7 @@
 // - Andreas Kurth <akurth@iis.ee.ethz.ch>
 
 `include "typedef.svh"
-`include "common_cells/registers.svh"
+`include "registers.svh"
 
 /// Split AXI4 bursts into single-beat transactions.
 ///

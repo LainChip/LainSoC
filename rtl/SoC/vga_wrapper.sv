@@ -2,6 +2,9 @@ module vga_wrapper (
     input aclk,
     input aresetn,
 
+    input dma_clk,
+    input dma_resetn,
+
     output wire [3:0] vga_r,
     output wire [3:0] vga_g,
     output wire [3:0] vga_b,
@@ -52,8 +55,8 @@ module vga_wrapper (
     vga_controller instance_vga (
         .s_axi_aclk         (aclk),
         .s_axi_aresetn      (aresetn),
-        .m_axi_aclk         (aclk),
-        .m_axi_aresetn      (aresetn),
+        .m_axi_aclk         (dma_clk),
+        .m_axi_aresetn      (dma_resetn),
         .sys_tft_clk        (vga_clk),
 
         .s_axi_araddr       (slv.ar_addr ),

@@ -48,7 +48,7 @@ module jpeg_decoder
     // Inputs
      input          clk_i
     ,input          rst_i
-    ,input          cfg_awvalid_i
+    ,(*mark_debug = "true"*) input          cfg_awvalid_i
     ,input  [31:0]  cfg_awaddr_i
     ,input          cfg_wvalid_i
     ,input  [31:0]  cfg_wdata_i
@@ -58,12 +58,12 @@ module jpeg_decoder
     ,input  [31:0]  cfg_araddr_i
     ,input          cfg_rready_i
     ,input          outport_awready_i
-    ,input          outport_wready_i
+    ,(*mark_debug = "true"*) input          outport_wready_i
     ,input          outport_bvalid_i
     ,input  [1:0]   outport_bresp_i
     ,input  [3:0]   outport_bid_i
     ,input          outport_arready_i
-    ,input          outport_rvalid_i
+    ,(*mark_debug = "true"*) input          outport_rvalid_i
     ,input  [31:0]  outport_rdata_i
     ,input  [1:0]   outport_rresp_i
     ,input  [3:0]   outport_rid_i
@@ -78,22 +78,22 @@ module jpeg_decoder
     ,output         cfg_rvalid_o
     ,output [31:0]  cfg_rdata_o
     ,output [1:0]   cfg_rresp_o
-    ,output         outport_awvalid_o
+    ,(*mark_debug = "true"*) output         outport_awvalid_o
     ,output [31:0]  outport_awaddr_o
     ,output [3:0]   outport_awid_o
     ,output [7:0]   outport_awlen_o
     ,output [1:0]   outport_awburst_o
-    ,output         outport_wvalid_o
+    ,(*mark_debug = "true"*) output         outport_wvalid_o
     ,output [31:0]  outport_wdata_o
     ,output [3:0]   outport_wstrb_o
     ,output         outport_wlast_o
     ,output         outport_bready_o
-    ,output         outport_arvalid_o
+    ,(*mark_debug = "true"*) output         outport_arvalid_o
     ,output [31:0]  outport_araddr_o
     ,output [3:0]   outport_arid_o
     ,output [7:0]   outport_arlen_o
     ,output [1:0]   outport_arburst_o
-    ,output         outport_rready_o
+    ,(*mark_debug = "true"*) output         outport_rready_o
 );
 
 //-----------------------------------------------------------------
@@ -388,7 +388,7 @@ localparam STATE_IDLE       = 2'd0;
 localparam STATE_FILL       = 2'd1;
 localparam STATE_ACTIVE     = 2'd2;
 localparam STATE_DRAIN      = 2'd3;
-reg [STATE_W-1:0] state_q;
+(*mark_debug = "true"*) reg [STATE_W-1:0] state_q;
 reg [STATE_W-1:0] next_state_r;
 
 always @ *

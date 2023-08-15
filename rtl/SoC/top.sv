@@ -92,6 +92,7 @@ module mchip_top (
 );
 
     wire soc_clk;
+    wire slow_sys_clk;
     wire ui_clk;
     wire mig_aresetn;
     `IPAD_GEN_SIMPLE(sys_rstn)
@@ -107,6 +108,7 @@ module mchip_top (
     .cpu_clk(cpu_clk),              // output cpu_clk
     .vga_clk(vga_clk),              // output vga_clk == 25mhz
     .soc_clk(soc_clk),              // output soc_clk
+    .slow_sys_clk(slow_sys_clk),
     .i2s_clk(i2s_clk),             // output i2s_clk == 96mhz
     // Status and control signals
     .resetn(sys_rstn_c),            // input resetn
@@ -308,6 +310,7 @@ soc_top #(
 ) soc (
     .soc_clk(soc_clk),
     .cpu_clk(cpu_clk),
+    .slow_clk(slow_sys_clk),
     .mig_aresetn(mig_aresetn),
     .mig_clk(ui_clk),
     

@@ -5,6 +5,7 @@ module soc_top #(
     input soc_clk,
     input mig_clk,
     input cpu_clk,
+    input slow_clk,
     input mig_aresetn,
     
     output [6:0]  mem_axi_awid,
@@ -167,17 +168,17 @@ wire soc_aresetn;
 // `AXI_LINE_W(migsoc_s, 7);
 
 `AXI_LINE(sdc_dma_m);
-`AXI_LINE(vga_dma_m);
-`AXI_LINE(jpeg_dma_m);
+// `AXI_LINE(vga_dma_m);
+// `AXI_LINE(jpeg_dma_m);
 `AXI_LINE(i2s_dma_m);
 `AXI_LINE(mem_m);
 // BOOST CLOCK
 `AXI_LINE(sdc_dma_mig_m);
 `CLK_BOOST(sdc_boost, sdc_dma_m, sdc_dma_mig_m);
 `AXI_LINE(vga_dma_mig_m);
-`CLK_BOOST(vga_boost, vga_dma_m, vga_dma_mig_m);
+// `CLK_BOOST(vga_boost, vga_dma_m, vga_dma_mig_m);
 `AXI_LINE(jpeg_dma_mig_m);
-`CLK_BOOST(jpeg_boost, jpeg_dma_m, jpeg_dma_mig_m);
+// `CLK_BOOST(jpeg_boost, jpeg_dma_m, jpeg_dma_mig_m);
 `AXI_LINE(i2s_dma_mig_m);
 `CLK_BOOST(i2s_boost, i2s_dma_m, i2s_dma_mig_m);
 `AXI_LINE(mem_mig_m);
@@ -260,8 +261,6 @@ function automatic logic [3:0] periph_addr_sel(input logic [ 31 : 0 ] addr);
         select = 5;
     else if (addr[31:16]==16'h1fe4 /* || addr[31:16]==16'h1fe7 || addr[31:16] == 16'h1fe5 */) // APB
         select = 3; 
-    else if (addr[31:16]==16'h1fd0) // conf
-        select = 2;
     // else if (addr[31:16]==16'h1ff0) // Ethernet
     //     select = 4;
     // else if (addr[31:16]==16'h1fb0) // Interrupt Controller
@@ -270,14 +269,16 @@ function automatic logic [3:0] periph_addr_sel(input logic [ 31 : 0 ] addr);
         select = 4;
     else if (addr[31:16]==16'h1c14 || addr[31:16]==16'h1c15) // i2s tx 
         select = 6;
-    else if (addr[31:16]==16'h1fe1) // SD Controller
-        select = 7;
-    else if (addr[31:16]==16'h1c11) // VGA Controller
-        select = 8;
-    else if (addr[31:16]==16'h1d10) // JPEG Decoder
-        select = 9;
     else if (addr[31:16]==16'h1c17) // USB Host Controller
         select = 10;
+    else if (addr[31:16]==16'h1fe1) // SD Controller
+        select = 7;
+    else if (addr[31:16]==16'h1d10 || addr[31:16]==16'h1d13) // VGA Controller
+        select = 8;
+    else if (addr[31:16]==16'h1d11) // JPEG Decoder
+        select = 9;
+    else if (addr[31:16]==16'h1d12) // conf 借用给 sm3 加密模块
+        select = 2;
     else // ERROR
         select = 0;
     return select;
@@ -394,8 +395,11 @@ vga_wrapper vga(
     .aclk(soc_clk),
     .aresetn(soc_aresetn),
 
+    .dma_clk(mig_clk),
+    .dma_resetn(mig_aresetn),
+
     .slv(vga_s),
-    .dma_mst(vga_dma_m),
+    .dma_mst(vga_dma_mig_m),
 
     .vga_r(vga_r),  // output wire [3 : 0] vga_r
     .vga_g(vga_g),  // output wire [3 : 0] vga_g
@@ -408,10 +412,14 @@ vga_wrapper vga(
 // jpeg
 jpeg_decoder_wrapper  jpeg_decoder (
     .aclk(soc_clk),
+    .decoder_clk(slow_clk),
     .aresetn(soc_aresetn),
 
+    .dma_clk(mig_clk),
+    .dma_resetn(mig_aresetn),
+
     .ctl_slv(jpeg_s),
-    .dma_mst(jpeg_dma_m)
+    .dma_mst(jpeg_dma_mig_m)
 );
 
 // i2s
@@ -693,5 +701,10 @@ axi2apb_misc #(.C_ASIC_SRAM(C_ASIC_SRAM)) APB_DEV
     assign mig_s.r_resp = mem_axi_rresp;
     assign mig_s.r_last = mem_axi_rlast;
     assign mig_s.r_valid = mem_axi_rvalid;
+
+`undef CLK_BOOST
+`undef AXI_LINE_W
+`undef AXI_LITE_LINE
+`undef AXI_LINE
 
 endmodule

@@ -149,7 +149,7 @@ localparam STATE_SOF_LENH    = 5'd15;
 localparam STATE_SOF_LENL    = 5'd16;
 localparam STATE_SOF_DATA    = 5'd17;
 
-reg [STATE_W-1:0] state_q;
+(*mark_debug = "true"*)reg [STATE_W-1:0] state_q;
 reg [15:0]        length_q;
 
 reg [STATE_W-1:0] next_state_r;

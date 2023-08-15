@@ -143,9 +143,9 @@ set_property -dict {PACKAGE_PIN AE3 IOSTANDARD LVCMOS33} [get_ports UTMI_dischrg
 set_property -dict {PACKAGE_PIN AE20 IOSTANDARD LVCMOS33} [get_ports UTMI_suspend_n]
 
 # I2S
-set_property -dict {PACKAGE_PIN T19 IOSTANDARD LVCMOS33} [get_ports I2S_sclk]
-set_property -dict {PACKAGE_PIN AD25 IOSTANDARD LVCMOS33} [get_ports I2S_sdata]
-set_property -dict {PACKAGE_PIN AF25 IOSTANDARD LVCMOS33} [get_ports I2S_lrclk]
+set_property -dict {PACKAGE_PIN V14 IOSTANDARD LVCMOS33} [get_ports I2S_sclk]
+set_property -dict {PACKAGE_PIN U15 IOSTANDARD LVCMOS33} [get_ports I2S_sdata]
+set_property -dict {PACKAGE_PIN AA23 IOSTANDARD LVCMOS33} [get_ports I2S_lrclk]
 
 # set_property -dict {PACKAGE_PIN AD4  IOSTANDARD LVCMOS33} [get_ports UTMI_hostdisc]
 # set_property -dict {PACKAGE_PIN W4   IOSTANDARD LVCMOS33} [get_ports UTMI_iddig]

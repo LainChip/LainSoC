@@ -29,7 +29,7 @@
 // limitations under the License.
 //-----------------------------------------------------------------
 
-`include "jpeg_decoder_defs.vh"
+`include "jpeg_decoder_defs.v"
 
 //-----------------------------------------------------------------
 // Module:  JPEG Decoder Peripheral
@@ -62,12 +62,12 @@ module jpeg_decoder
     ,input          outport_bvalid_i
     ,input  [1:0]   outport_bresp_i
     ,input  [3:0]   outport_bid_i
-    ,input          outport_arready_i
+    ,(*mark_debug = "true"*) input          outport_arready_i
     ,(*mark_debug = "true"*) input          outport_rvalid_i
-    ,input  [31:0]  outport_rdata_i
+    ,(*mark_debug = "true"*) input  [31:0]  outport_rdata_i
     ,input  [1:0]   outport_rresp_i
     ,input  [3:0]   outport_rid_i
-    ,input          outport_rlast_i
+    ,(*mark_debug = "true"*) input          outport_rlast_i
 
     // Outputs
     ,output         cfg_awready_o
@@ -108,7 +108,7 @@ reg wvalid_q;
 wire wr_cmd_accepted_w  = (cfg_awvalid_i && cfg_awready_o) || awvalid_q;
 wire wr_data_accepted_w = (cfg_wvalid_i  && cfg_wready_o)  || wvalid_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     awvalid_q <= 1'b0;
 else if (cfg_awvalid_i && cfg_awready_o && !wr_data_accepted_w)
@@ -116,7 +116,7 @@ else if (cfg_awvalid_i && cfg_awready_o && !wr_data_accepted_w)
 else if (wr_data_accepted_w)
     awvalid_q <= 1'b0;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     wvalid_q <= 1'b0;
 else if (cfg_wvalid_i && cfg_wready_o && !wr_cmd_accepted_w)
@@ -129,20 +129,20 @@ else if (wr_cmd_accepted_w)
 //-----------------------------------------------------------------
 reg [7:0] wr_addr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     wr_addr_q <= 8'b0;
 else if (cfg_awvalid_i && cfg_awready_o)
     wr_addr_q <= cfg_awaddr_i[7:0];
 
-wire [7:0] wr_addr_w = awvalid_q ? wr_addr_q : cfg_awaddr_i[7:0];
+(*mark_debug = "true"*) wire [7:0] wr_addr_w = awvalid_q ? wr_addr_q : cfg_awaddr_i[7:0];
 
 //-----------------------------------------------------------------
 // Retime write data
 //-----------------------------------------------------------------
-reg [31:0] wr_data_q;
+(*mark_debug = "true"*) reg [31:0] wr_data_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     wr_data_q <= 32'b0;
 else if (cfg_wvalid_i && cfg_wready_o)
@@ -152,7 +152,7 @@ else if (cfg_wvalid_i && cfg_wready_o)
 // Request Logic
 //-----------------------------------------------------------------
 wire read_en_w  = cfg_arvalid_i & cfg_arready_o;
-wire write_en_w = wr_cmd_accepted_w && wr_data_accepted_w;
+(*mark_debug = "true"*) wire write_en_w = wr_cmd_accepted_w && wr_data_accepted_w;
 
 //-----------------------------------------------------------------
 // Accept Logic
@@ -167,7 +167,7 @@ assign cfg_wready_o  = ~cfg_bvalid_o && ~cfg_arvalid_i && ~wvalid_q;
 //-----------------------------------------------------------------
 reg jpeg_ctrl_wr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_ctrl_wr_q <= 1'b0;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_CTRL))
@@ -178,7 +178,7 @@ else
 // jpeg_ctrl_start [auto_clr]
 reg        jpeg_ctrl_start_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_ctrl_start_q <= 1'd`JPEG_CTRL_START_DEFAULT;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_CTRL))
@@ -192,7 +192,7 @@ wire        jpeg_ctrl_start_out_w = jpeg_ctrl_start_q;
 // jpeg_ctrl_abort [auto_clr]
 reg        jpeg_ctrl_abort_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_ctrl_abort_q <= 1'd`JPEG_CTRL_ABORT_DEFAULT;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_CTRL))
@@ -206,7 +206,7 @@ wire        jpeg_ctrl_abort_out_w = jpeg_ctrl_abort_q;
 // jpeg_ctrl_length [internal]
 reg [23:0]  jpeg_ctrl_length_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_ctrl_length_q <= 24'd`JPEG_CTRL_LENGTH_DEFAULT;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_CTRL))
@@ -220,7 +220,7 @@ wire [23:0]  jpeg_ctrl_length_out_w = jpeg_ctrl_length_q;
 //-----------------------------------------------------------------
 reg jpeg_status_wr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_status_wr_q <= 1'b0;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_STATUS))
@@ -234,7 +234,7 @@ else
 //-----------------------------------------------------------------
 reg jpeg_src_wr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_src_wr_q <= 1'b0;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_SRC))
@@ -245,7 +245,7 @@ else
 // jpeg_src_addr [internal]
 reg [31:0]  jpeg_src_addr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_src_addr_q <= 32'd`JPEG_SRC_ADDR_DEFAULT;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_SRC))
@@ -259,7 +259,7 @@ wire [31:0]  jpeg_src_addr_out_w = jpeg_src_addr_q;
 //-----------------------------------------------------------------
 reg jpeg_dst_wr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_dst_wr_q <= 1'b0;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_DST))
@@ -270,13 +270,38 @@ else
 // jpeg_dst_addr [internal]
 reg [31:0]  jpeg_dst_addr_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     jpeg_dst_addr_q <= 32'd`JPEG_DST_ADDR_DEFAULT;
 else if (write_en_w && (wr_addr_w[7:0] == `JPEG_DST))
     jpeg_dst_addr_q <= cfg_wdata_i[`JPEG_DST_ADDR_R];
 
 wire [31:0]  jpeg_dst_addr_out_w = jpeg_dst_addr_q;
+
+//-----------------------------------------------------------------
+// Register stride
+//-----------------------------------------------------------------
+reg jpeg_stride_wr_q;
+
+always @ (posedge clk_i)
+if (rst_i)
+    jpeg_stride_wr_q <= 1'b0;
+else if (write_en_w && (wr_addr_w[7:0] == `JPEG_STRIDE))
+    jpeg_stride_wr_q <= 1'b1;
+else
+    jpeg_stride_wr_q <= 1'b0;
+
+// jpeg_dst_addr [internal]
+reg [31:0]  jpeg_stride_q;
+
+always @ (posedge clk_i)
+if (rst_i)
+    jpeg_stride_q <= 32'd1024;
+else if (write_en_w && (wr_addr_w[7:0] == `JPEG_STRIDE))
+    jpeg_stride_q <= cfg_wdata_i[`JPEG_DST_ADDR_R];
+
+wire [31:0]  jpeg_stride_out_w = jpeg_stride_q;
+
 
 
 wire        jpeg_status_busy_in_w;
@@ -317,9 +342,9 @@ end
 //-----------------------------------------------------------------
 // RVALID
 //-----------------------------------------------------------------
-reg rvalid_q;
+reg rvalid_q;   
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     rvalid_q <= 1'b0;
 else if (read_en_w)
@@ -334,7 +359,7 @@ assign cfg_rvalid_o = rvalid_q;
 //-----------------------------------------------------------------
 reg [31:0] rd_data_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     rd_data_q <= 32'b0;
 else if (!cfg_rvalid_o || cfg_rready_i)
@@ -348,7 +373,7 @@ assign cfg_rresp_o = 2'b0;
 //-----------------------------------------------------------------
 reg bvalid_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     bvalid_q <= 1'b0;
 else if (write_en_w)
@@ -365,9 +390,9 @@ localparam BUFFER_DEPTH   = 1024;
 localparam BUFFER_DEPTH_W = 10;
 localparam BURST_LEN      = 32 / 4;
 
-wire        jpeg_valid_w;
-wire [31:0] jpeg_data_w;
-wire        jpeg_accept_w;
+(*mark_debug = "true"*) wire        jpeg_valid_w;
+(*mark_debug = "true"*) wire [31:0] jpeg_data_w;
+(*mark_debug = "true"*) wire        jpeg_accept_w;
 
 wire [10:0] fifo_in_level_w;
 wire [10:0] fifo_addr_level_w;
@@ -424,7 +449,7 @@ begin
         next_state_r = STATE_IDLE;
 end
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     state_q <= STATE_IDLE;
 else
@@ -437,7 +462,7 @@ assign jpeg_status_busy_in_w = (state_q != STATE_IDLE);
 //-----------------------------------------------------------------
 reg  core_active_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     core_active_q  <= 1'b0;
 else if (state_q == STATE_IDLE && next_state_r == STATE_FILL)
@@ -448,7 +473,7 @@ else if (state_q == STATE_ACTIVE && next_state_r == STATE_DRAIN)
 //-----------------------------------------------------------------
 // Core busy
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     core_busy_q  <= 1'b0;
 else if (state_q == STATE_ACTIVE && !core_idle_w)
@@ -459,7 +484,7 @@ else if (state_q == STATE_ACTIVE && core_idle_w)
 //-----------------------------------------------------------------
 // FIFO allocation
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     allocated_q  <= 16'b0;
 else if (jpeg_ctrl_abort_out_w || (state_q == STATE_DRAIN))
@@ -481,14 +506,14 @@ else if (jpeg_valid_w && jpeg_accept_w)
 wire [31:0] fetch_bytes_w = {22'b0, (outport_arlen_o + 8'd1), 2'b0};
 
 reg         arvalid_q;
-reg [31:0]  araddr_q;
+(*mark_debug = "true"*) reg [31:0]  araddr_q;
 
 wire [31:0] remain_rounded_w = remaining_q + 32'd3;
 wire [31:0] remain_words_w   = {2'b0, remain_rounded_w[31:2]};
 wire [31:0] max_words_w      = (remain_words_w > BURST_LEN && (araddr_q & ((BURST_LEN*4)-1)) == 32'd0) ? BURST_LEN : 1;
 wire        fifo_space_w     = (BUFFER_DEPTH - allocated_q) > BURST_LEN;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     remaining_q <= 32'b0;
 else if (jpeg_ctrl_start_out_w)
@@ -503,7 +528,7 @@ begin
         remaining_q <= 32'b0;
 end
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     arvalid_q <= 1'b0;
 else if (outport_arvalid_o && outport_arready_i)
@@ -513,7 +538,7 @@ else if (!outport_arvalid_o && fifo_space_w && remaining_q != 32'b0)
 
 assign outport_arvalid_o = arvalid_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     araddr_q <= 32'b0;
 else if (outport_arvalid_o && outport_arready_i)
@@ -523,7 +548,7 @@ else if (jpeg_ctrl_start_out_w)
 
 reg [7:0] arlen_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     arlen_q <= 8'b0;
 else
@@ -606,19 +631,19 @@ u_core
 assign jpeg_accept_w = core_accept_w & (state_q == STATE_ACTIVE);
 
 wire [15:0] rgb565_w = {pixel_r_w[7:3], pixel_g_w[7:2], pixel_b_w[7:3]};
-
+wire [31:0] rgb888_w = {8'hff, pixel_r_w[7:0], pixel_g_w[7:0], pixel_b_w[7:0]};
 //-----------------------------------------------------------------
 // Write Combine
 //-----------------------------------------------------------------
 reg [15:0] pixel_q;
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     pixel_q  <= 16'b0;
 else if (pixel_valid_w)
     pixel_q  <= rgb565_w;
 
 reg pixel_idx_q;
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     pixel_idx_q  <= 1'b0;
 else if (pixel_valid_w)
@@ -626,15 +651,16 @@ else if (pixel_valid_w)
 
 reg [31:0] pixel_offset_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     pixel_offset_q  <= 32'b0;
 else
-    pixel_offset_q  <= {15'b0, pixel_w_w, 1'b0} * {16'b0,pixel_y_w};
+    pixel_offset_q  <= {14'd0,jpeg_stride_out_w[15:0], 2'b00} * {16'b0, pixel_y_w};
 
-wire [31:0] pixel_addr_w  = jpeg_dst_addr_out_w + pixel_offset_q + {15'b0, pixel_x_w[15:1], 2'b0};
-wire        pixel_ready_w = pixel_idx_q && pixel_valid_w;
-wire [31:0] pixel_data_w  = {rgb565_w, pixel_q};
+wire [31:0] pixel_addr_w  = jpeg_dst_addr_out_w + pixel_offset_q + {15'b0, pixel_x_w[15:0], 2'b0};
+wire        pixel_ready_w = /*pixel_idx_q && */pixel_valid_w;
+// wire [31:0] pixel_data_w  = {rgb565_w, pixel_q};
+wire [31:0] pixel_data_w  = rgb888_w;
 
 //-----------------------------------------------------------------
 // Output FIFO

@@ -60,7 +60,7 @@ wire [9:0] write_next_w = wr_ptr_q + 10'd1;
 
 wire full_w = (write_next_w == rd_ptr_q);
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     wr_ptr_q <= 10'b0;
 // Push
@@ -73,13 +73,13 @@ else if (push_i & !full_w)
 wire read_ok_w = (wr_ptr_q != rd_ptr_q);
 reg  rd_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     rd_q <= 1'b0;
 else
     rd_q <= read_ok_w;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     rd_ptr_q     <= 10'b0;
 // Read address increment
@@ -92,7 +92,7 @@ else if (read_ok_w && ((!valid_o) || (valid_o && pop_i)))
 reg                rd_skid_q;
 reg [31:0] rd_skid_data_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
 begin
     rd_skid_q <= 1'b0;
@@ -150,7 +150,7 @@ assign data_out_o = rd_skid_q ? rd_skid_data_q : data_out_w;
 //-------------------------------------------------------------------
 reg [10:0]  count_q;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     count_q   <= 11'b0;
 // Count up

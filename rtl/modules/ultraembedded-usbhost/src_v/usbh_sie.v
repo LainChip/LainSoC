@@ -366,7 +366,7 @@ begin
 end
 
 // Update state
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     state_q   <= STATE_IDLE;
 else
@@ -375,7 +375,7 @@ else
 //-----------------------------------------------------------------
 // Tx Token
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     token_q         <= 16'h0000;
 else if (state_q == STATE_IDLE)
@@ -387,7 +387,7 @@ else if (state_q == STATE_TX_TOKEN1 && utmi_txready_i)
 //-----------------------------------------------------------------
 // Tx Timer
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     last_tx_time_q <= 10'd0;
 // Start counting from last Tx
@@ -400,7 +400,7 @@ else if (last_tx_time_q != RX_TIMEOUT)
 //-----------------------------------------------------------------
 // Transmit / Receive counter
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     byte_count_q <= 16'h0000;
 // New transfer request (not automatic SOF request)
@@ -422,7 +422,7 @@ else if (state_q == STATE_RX_DATA && data_ready_w && !crc_byte_w)
 //-----------------------------------------------------------------
 // Transfer start ack
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     start_ack_q  <= 1'b0;
 // First byte of PID sent, ack transfer request
@@ -434,7 +434,7 @@ else
 //-----------------------------------------------------------------
 // Record request details
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
 begin
     in_transfer_q   <= 1'b0;
@@ -464,7 +464,7 @@ end
 //-----------------------------------------------------------------
 // Response delay timer
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
 begin
     rx_time_q       <= RX_TIME_ZERO;
@@ -487,7 +487,7 @@ else if (rx_time_en_q && rx_time_q != RX_TIME_READY)
     rx_time_q       <= rx_time_q + RX_TIME_INC;
 
 // Response expected
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     wait_resp_q <= 1'b0;
 // Incoming data
@@ -499,7 +499,7 @@ else if (state_q == STATE_IDLE && start_i)
 //-----------------------------------------------------------------
 // Status
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 begin
    if (rst_i)
    begin
@@ -592,13 +592,13 @@ reg [3:0]  rx_active_q;
 
 wire shift_en_w = (utmi_rxvalid_i & utmi_rxactive_i) || !utmi_rxactive_i;
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     data_buffer_q <= 32'b0;
 else if (shift_en_w)
     data_buffer_q <= {utmi_data_i, data_buffer_q[31:8]};
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     data_valid_q <= 4'b0;
 else if (shift_en_w)
@@ -607,13 +607,13 @@ else
     data_valid_q <= {data_valid_q[3:1], 1'b0};
 
 reg [1:0] data_crc_q;
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     data_crc_q <= 2'b0;
 else if (shift_en_w)
     data_crc_q <= {!utmi_rxactive_i, data_crc_q[1]};
 
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
     rx_active_q <= 4'b0;
 else
@@ -647,7 +647,7 @@ u_crc5
 );
 
 // CRC control / check
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 begin
    if (rst_i)
    begin

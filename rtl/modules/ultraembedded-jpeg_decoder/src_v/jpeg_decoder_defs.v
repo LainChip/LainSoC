@@ -76,3 +76,5 @@
     `define JPEG_DST_ADDR_W          32
     `define JPEG_DST_ADDR_R          31:0
 
+`define JPEG_STRIDE    8'h10
+

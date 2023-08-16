@@ -74,7 +74,7 @@ reg [COUNT_W-1:0] count_q;
 //-----------------------------------------------------------------
 // Sequential
 //-----------------------------------------------------------------
-always @ (posedge clk_i or posedge rst_i)
+always @ (posedge clk_i)
 if (rst_i)
 begin
     count_q   <= {(COUNT_W) {1'b0}};

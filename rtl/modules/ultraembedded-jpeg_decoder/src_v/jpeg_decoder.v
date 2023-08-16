@@ -334,6 +334,10 @@ begin
     begin
         data_r[`JPEG_DST_ADDR_R] = jpeg_dst_addr_q;
     end
+    `JPEG_STRIDE:
+    begin
+        data_r[`JPEG_DST_ADDR_R] = jpeg_stride_q;
+    end
     default :
         data_r = 32'b0;
     endcase

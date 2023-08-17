@@ -4,6 +4,7 @@
 *.dcp
 complex_soc.gen
 complex_soc.runs
-complex_soc.ip_user_files/*
+complex_soc.ip_user_files
 complex_soc.sim
+complex_soc.srcs
 ip_upgrade.log

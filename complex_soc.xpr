@@ -2609,7 +2609,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/xil_axi_to_ahbl/xil_axi_to_ahbl.xci">
+      <File Path="$PPRDIR/rtl/IP/xil_axi_to_ahbl/xil_axi_to_ahbl.xci">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -2685,7 +2685,7 @@
       </Config>
     </FileSet>
     <FileSet Name="xil_axi_clock_conv" Type="BlockSrcs" RelSrcDir="$PSRCDIR/xil_axi_clock_conv" RelGenDir="$PGENDIR/xil_axi_clock_conv">
-      <File Path="$PSRCDIR/sources_1/ip/xil_axi_clock_conv/xil_axi_clock_conv.xci">
+      <File Path="$PPRDIR/rtl/IP/xil_axi_clock_conv/xil_axi_clock_conv.xci">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
